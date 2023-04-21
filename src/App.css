@@ -1,38 +1,209 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+body {
   display: flex;
   flex-direction: column;
+  font-family: 'Raleway', sans-serif;
+  background-color: #0f273b;
+}
+
+
+h1 {
+  text-align: center;
+  font-size: 60px;
+  color: whitesmoke;
+  font-weight: 600;
+  margin: 0;
+}
+
+.upper_panel {
+  min-width: 700px;
+  max-width: 800px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin:  50px auto 0 auto;
+  justify-content: space-evenly;
+  border-bottom: 1px solid white;
+  padding-bottom: 10px;
+}
+
+.boardPanel {
+  width: 604px;
+  height: 604px;
+  margin: 0 auto;
+}
+
+.board_row {
+  display: flex;
+  width: fit-content;
+}
+
+.square {
+  display: flex;
+  width: 200px;
+  height: 200px;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  color: whitesmoke;
+  font-size: 120px;
+  font-weight: 600;
+}
+
+.board_row:not(:last-child) {
+  border-bottom: 1px solid white;
+}
+
+.square:not(:nth-child(3)) {
+  border-right: 1px solid whitesmoke;
+}
+
+.square:hover {
+  background-color: #154359;
+  cursor: pointer;
+}
+
+.start_game_button {
+  height: 50px;
+  width: 50px;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 25px;
+}
+
+.start_game_button:hover {
+  background-color: #049a22;
+}
+
+#start_icon {
+  width: 50px;
+  height: 50px;
+  padding: 1px;
+}
+
+
+.game_info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto 30px;
+  height: 50px;
+  width: 250px;
+  color: white;
+  background-color: #294e5e;
+  border-radius: 10px;
+}
+
+#game_info > * {
+  text-align: center;
+  background-color: #294e5e;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+
+.reset_game_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 55px;
+  width: 55px;
+  background-color: #a63333;
+  border-radius: 25px;
+  border: none;
+  font-size: 15px;
+  box-shadow: 0px 4px #6c3535;
+}
+
+.reset_game_button:hover {
+  background-color: #c42f2f;
+  cursor: pointer;
+}
+
+
+form {
+  min-width: 400px;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  justify-content: space-around;
+  align-items: center;
+  color: white;
+  padding: 0;
+  flex-grow: 1;
+}
+
+form > * {
+  color: white;
+  padding: 0;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: row;
+  width: 200px;
+  justify-content: space-around;
+}
+
+
+.icon {
+  height: 50px;
+  width: 50px;
+  padding: 0px;
+}
+
+#restart_icon {
+  height: 40px;
+  width: 40px;
+}
+
+
+
+input[type='radio']:hover + label {
+  border-bottom: 2px solid white;
+  cursor: pointer;
+}
+
+input[type='radio']:checked + label {
+  border-bottom: 2px solid white;
+}
+
+input {
+  opacity: 0;
+  position: absolute;
+}
+
+.sources {
+  width: 1200px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  bottom: 0;
+  font-size: 10px;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.sources a {
+  color: white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+img {
+  background: none;
+  border: none;
 }
+
+#O_sign {
+  color: #e0ce34;
+}
+
+#X_sign {
+  color: #0a62a2;
+}
+
