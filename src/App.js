@@ -3,8 +3,9 @@ import './App.css'
 import returnIcon from './images/return.png'
 
 function Square({id, value, onClick}) {
+
     return (
-        <div onClick={onClick} className='square' id={id}>{value}</div>
+        <div onClick={onClick} className={`square ${value === 'O' ? 'O_sign' : 'X_sign'}`} id={id}>{value}</div>
     )
 }
 
@@ -61,6 +62,7 @@ function Board() {
         calculateGameResult(isOTurn);
         setOTurn(!isOTurn);
     }
+
 
     function calculateGameResult() {
         let player;
@@ -145,7 +147,8 @@ function Board() {
             </div>
             <div className="sources">
                 Icons made by
-                <a href="https://www.flaticon.com/free-icons/return" title="return icons">Return icons created by Smartline - Flaticon</a>
+                <a href="https://www.flaticon.com/free-icons/return" title="return icons">Return icons created by
+                    Smartline - Flaticon</a>
             </div>
         </>
     )

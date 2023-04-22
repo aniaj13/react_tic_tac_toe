@@ -147,11 +147,11 @@ h1 {
   width: 40px;
 }
 
-#O_sign {
+.O_sign {
   color: #e0ce34;
 }
 
-#X_sign {
+.X_sign {
   color: #0a62a2;
 }
 
