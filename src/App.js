@@ -1,5 +1,6 @@
 import {useState} from "react";
 import './App.css'
+import returnIcon from './images/return.png'
 
 function Square({id, value, onClick}) {
     return (
@@ -16,14 +17,23 @@ function GameInfo({value, isGameOver, winner}) {
                     Its a draw!
                 </div>)}
             {isGameOver && winner !== null && (
-            <div className='game_info'>
-                Player {winner} Won!
-            </div>)}
+                <div className='game_info'>
+                    Player {winner} Won!
+                </div>)}
             {!isGameOver && (
-            <div className='game_info'>
-                Player {value} Turn
-            </div>)}
+                <div className='game_info'>
+                    Player {value} Turn
+                </div>)}
 
+        </>
+    )
+}
+
+function ResetButton({handleReset}) {
+    return (
+        <>
+            <button onClick={handleReset} className='reset_game_button'><img src={returnIcon} alt='Reset'
+                                                                             id='returnIcon'/></button>
         </>
     )
 }
@@ -101,9 +111,20 @@ function Board() {
         return true;
     }
 
+    function resetGame() {
+        setIsGameOver(false);
+        setOTurn(true)
+        setWinner(null)
+        setSquares(Array(3).fill(null).map(() => Array(3).fill(null)))
+        setPlayerTurnSign('O')
+    }
 
     return (
         <>
+            <div className='upper_panel'>
+                <h1>XO</h1>
+                <ResetButton handleReset={resetGame}/>
+            </div>
             <GameInfo value={playerTurnSign} isGameOver={isGameOver} winner={winner}/>
             <div className='boardPanel'>
                 <div className='board_row'>
@@ -121,6 +142,10 @@ function Board() {
                     <Square id='square_2_1' value={squares[2][1]} onClick={() => handleClick(2, 1)}/>
                     <Square id='square_2_2' value={squares[2][2]} onClick={() => handleClick(2, 2)}/>
                 </div>
+            </div>
+            <div className="sources">
+                Icons made by
+                <a href="https://www.flaticon.com/free-icons/return" title="return icons">Return icons created by Smartline - Flaticon</a>
             </div>
         </>
     )
