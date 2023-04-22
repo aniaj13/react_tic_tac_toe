@@ -1,6 +1,8 @@
 import {useState} from "react";
 import './App.css'
 import returnIcon from './images/return.png'
+import multiPlayerIcon from './images/people.png'
+import singlePlayerIcon from './images/computer.png'
 
 function Square({id, value, onClick}) {
 
@@ -34,8 +36,23 @@ function ResetButton({handleReset}) {
     return (
         <>
             <button onClick={handleReset} className='reset_game_button'><img src={returnIcon} alt='Reset'
+                                                                             className='icon'
                                                                              id='returnIcon'/></button>
         </>
+    )
+}
+
+function MultiPlayerButton({onClick}) {
+    return (
+        <button onClick={onClick}><img src={multiPlayerIcon} alt="MultiPlayer" className='icon' id='multiPlayerIcon'/>
+        </button>
+    )
+}
+
+function SinglePlayerButton({onClick}) {
+    return (
+        <button onClick={onClick}><img src={singlePlayerIcon} alt="SinglePlayer" className='icon'
+                                       id='singlePlayerIcon'/></button>
     )
 }
 
@@ -45,11 +62,20 @@ function Board() {
     const [playerTurnSign, setPlayerTurnSign] = useState('O')
     const [isGameOver, setIsGameOver] = useState(false)
     const [winner, setWinner] = useState(null)
+    const [gameMode, setGameMode] = useState(null)
 
-    function handleClick(i, j) {
-        if (squares[i][j] || isGameOver) {
-            return;
-        }
+
+    function singlePlayerStart() {
+        console.log('picked single player')
+        setGameMode('singleplayer')
+    }
+
+    function multiPlayerStart() {
+        console.log('picked multi player')
+        setGameMode('multiplayer')
+    }
+
+    function makeMove(i, j) {
         const nextSquares = squares.slice()
         if (isOTurn) {
             nextSquares[i][j] = 'O'
@@ -61,6 +87,35 @@ function Board() {
         setSquares(nextSquares);
         calculateGameResult(isOTurn);
         setOTurn(!isOTurn);
+    }
+
+    function handleClick(i, j) {
+        if (squares[i][j] || isGameOver) {
+            return;
+        }
+        if (gameMode === 'multiplayer') {
+            makeMove(i, j);
+        } else if (gameMode === 'singleplayer') {
+            makeMove(i, j)
+            if (!isGameOver) {
+                makePcMove()
+            }
+        }
+    }
+
+    function makePcMove() {
+        let row = Math.floor(Math.random() * 3)
+        let column = Math.floor(Math.random() * 3)
+        while (squares[row][column] !== null) {
+            row = Math.floor(Math.random() * 3)
+            column = Math.floor(Math.random() * 3)
+        }
+        const nextSquares = squares.slice();
+        nextSquares[row][column] = 'X';
+        setPlayerTurnSign('O')
+        setSquares(nextSquares);
+        calculateGameResult(isOTurn)
+        setOTurn(!isOTurn)
     }
 
 
@@ -125,6 +180,8 @@ function Board() {
         <>
             <div className='upper_panel'>
                 <h1>XO</h1>
+                <SinglePlayerButton onClick={singlePlayerStart}/>
+                <MultiPlayerButton onClick={multiPlayerStart}/>
                 <ResetButton handleReset={resetGame}/>
             </div>
             <GameInfo value={playerTurnSign} isGameOver={isGameOver} winner={winner}/>
