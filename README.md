@@ -8,14 +8,15 @@
 ## Features
 
 * Multiplayer gameplay on single device.
+* Singleplayer gameplay against a computer.
 * You can play on a 3x3 board using the app. 
 
 ## Project Status
 
-* In progress.
+* Waiting on feedback from a reviewer.
 
-## Features left to implement
+## Room for advancement
 
-* Singleplayer game mode.
-* Optional: Score Board.
+* Enable gameplay on boards larger than 3x3.
+* Score Board.
 
