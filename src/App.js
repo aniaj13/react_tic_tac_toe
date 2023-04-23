@@ -222,6 +222,10 @@ function Board() {
                 Icons made by
                 <a href="https://www.flaticon.com/free-icons/return" title="return icons">Return icons created by
                     Smartline - Flaticon</a>
+                <a href="https://www.flaticon.com/free-icons/people" title="people icons">People icons created by Muhazdinata -
+                    Flaticon</a>
+                <a href="https://www.flaticon.com/free-icons/computer" title="computer icons">Computer icons created by Freepik -
+                    Flaticon</a>
             </div>
         </>
     )
