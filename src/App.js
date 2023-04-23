@@ -64,6 +64,7 @@ function Board() {
     const [isGameOver, setIsGameOver] = useState(false)
     const [winner, setWinner] = useState(null)
     const [gameMode, setGameMode] = useState(null)
+    const [isPcMakingMove, setIsPcMakingMove] = useState(false)
 
     function singlePlayerStart() {
         console.log('picked single player')
@@ -93,7 +94,7 @@ function Board() {
     }
 
     function handleClick(i, j) {
-        if (squares[i][j] || isGameOver || winner) {
+        if (squares[i][j] || isGameOver || winner || isPcMakingMove) {
             return;
         }
         if (gameMode === 'multiplayer') {
@@ -101,13 +102,13 @@ function Board() {
         } else if (gameMode === 'singleplayer') {
             makeMove(i, j)
             const gameResult = calculateGameResult('O')
-
-            setTimeout(() => {
-                if (!gameResult) {
+            if (!gameResult) {
+                setIsPcMakingMove(true);
+                setTimeout(() => {
                     makePcMove()
-                }
-            }, 500)
-
+                    setIsPcMakingMove(false)
+                }, 500)
+            }
         } else if (gameMode === null) {
             alert('Pick a game mode to start')
         }
