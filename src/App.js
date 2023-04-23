@@ -1,6 +1,8 @@
 import {useState} from "react";
 import './App.css'
 import returnIcon from './images/return.png'
+import multiPlayerIcon from './images/people.png'
+import singlePlayerIcon from './images/computer.png'
 
 function Square({id, value, onClick}) {
 
@@ -9,7 +11,7 @@ function Square({id, value, onClick}) {
     )
 }
 
-function GameInfo({value, isGameOver, winner}) {
+function GameInfo({value, isGameOver, winner, gameMode}) {
 
     return (
         <>
@@ -23,7 +25,7 @@ function GameInfo({value, isGameOver, winner}) {
                 </div>)}
             {!isGameOver && (
                 <div className='game_info'>
-                    Player {value} Turn
+                    {gameMode && <p>Player {value} Turn</p>}
                 </div>)}
 
         </>
@@ -34,10 +36,26 @@ function ResetButton({handleReset}) {
     return (
         <>
             <button onClick={handleReset} className='reset_game_button'><img src={returnIcon} alt='Reset'
+                                                                             className='icon'
                                                                              id='returnIcon'/></button>
         </>
     )
 }
+
+function MultiPlayerButton({onClick}) {
+    return (
+        <button onClick={onClick}><img src={multiPlayerIcon} alt="MultiPlayer" className='icon' id='multiPlayerIcon'/>
+        </button>
+    )
+}
+
+function SinglePlayerButton({onClick}) {
+    return (
+        <button onClick={onClick}><img src={singlePlayerIcon} alt="SinglePlayer" className='icon'
+                                       id='singlePlayerIcon'/></button>
+    )
+}
+
 
 function Board() {
     const [squares, setSquares] = useState(Array(3).fill(null).map(() => Array(3).fill(null)))
@@ -45,11 +63,22 @@ function Board() {
     const [playerTurnSign, setPlayerTurnSign] = useState('O')
     const [isGameOver, setIsGameOver] = useState(false)
     const [winner, setWinner] = useState(null)
+    const [gameMode, setGameMode] = useState(null)
 
-    function handleClick(i, j) {
-        if (squares[i][j] || isGameOver) {
-            return;
-        }
+    function singlePlayerStart() {
+        console.log('picked single player')
+        setGameMode('singleplayer')
+        resetGame()
+    }
+
+    function multiPlayerStart() {
+        console.log('picked multi player')
+        setGameMode('multiplayer')
+        resetGame()
+    }
+
+
+    function makeMove(i, j) {
         const nextSquares = squares.slice()
         if (isOTurn) {
             nextSquares[i][j] = 'O'
@@ -59,18 +88,48 @@ function Board() {
             setPlayerTurnSign('O')
         }
         setSquares(nextSquares);
-        calculateGameResult(isOTurn);
+        calculateGameResult(isOTurn ? 'O' : 'X');
         setOTurn(!isOTurn);
     }
 
-
-    function calculateGameResult() {
-        let player;
-        if (isOTurn) {
-            player = 'O'
-        } else if (!isOTurn) {
-            player = 'X'
+    function handleClick(i, j) {
+        if (squares[i][j] || isGameOver || winner) {
+            return;
         }
+        if (gameMode === 'multiplayer') {
+            makeMove(i, j);
+        } else if (gameMode === 'singleplayer') {
+            makeMove(i, j)
+            const gameResult = calculateGameResult('O')
+
+            setTimeout(() => {
+                if (!gameResult) {
+                    makePcMove()
+                }
+            }, 500)
+
+        } else if (gameMode === null) {
+            alert('Pick a game mode to start')
+        }
+    }
+
+
+    function makePcMove() {
+        const pcSquares = squares.slice()
+        let row = Math.floor(Math.random() * 3)
+        let column = Math.floor(Math.random() * 3)
+        while (squares[row][column] !== null) {
+            row = Math.floor(Math.random() * 3)
+            column = Math.floor(Math.random() * 3)
+        }
+        pcSquares[row][column] = 'X'
+        setPlayerTurnSign('O')
+        setSquares(pcSquares)
+        calculateGameResult('X')
+        setOTurn(true)
+    }
+
+    function calculateGameResult(player) {
         if (checkWin(player)) {
             console.log(`${player} Won`)
             setIsGameOver(true);
@@ -123,26 +182,39 @@ function Board() {
 
     return (
         <>
+
             <div className='upper_panel'>
                 <h1>XO</h1>
+                <SinglePlayerButton onClick={singlePlayerStart}/>
+                <MultiPlayerButton onClick={multiPlayerStart}/>
                 <ResetButton handleReset={resetGame}/>
             </div>
-            <GameInfo value={playerTurnSign} isGameOver={isGameOver} winner={winner}/>
+            <div className='game_mode_info'>{gameMode}</div>
+            <GameInfo value={playerTurnSign} isGameOver={isGameOver} winner={winner} gameMode={gameMode}/>
             <div className='boardPanel'>
                 <div className='board_row'>
-                    <Square id='square_0_0' value={squares[0][0]} onClick={() => handleClick(0, 0)}/>
-                    <Square id='square_0_1' value={squares[0][1]} onClick={() => handleClick(0, 1)}/>
-                    <Square id='square_0_2' value={squares[0][2]} onClick={() => handleClick(0, 2)}/>
+                    <Square id='square_0_0' value={squares[0][0]}
+                            onClick={() => handleClick(0, 0)}/>
+                    <Square id='square_0_1' value={squares[0][1]}
+                            onClick={() => handleClick(0, 1)}/>
+                    <Square id='square_0_2' value={squares[0][2]}
+                            onClick={() => handleClick(0, 2)}/>
                 </div>
                 <div className='board_row'>
-                    <Square id='square_1_0' value={squares[1][0]} onClick={() => handleClick(1, 0)}/>
-                    <Square id='square_1_1' value={squares[1][1]} onClick={() => handleClick(1, 1)}/>
-                    <Square id='square_1_2' value={squares[1][2]} onClick={() => handleClick(1, 2)}/>
+                    <Square id='square_1_0' value={squares[1][0]}
+                            onClick={() => handleClick(1, 0)}/>
+                    <Square id='square_1_1' value={squares[1][1]}
+                            onClick={() => handleClick(1, 1)}/>
+                    <Square id='square_1_2' value={squares[1][2]}
+                            onClick={() => handleClick(1, 2)}/>
                 </div>
                 <div className='board_row'>
-                    <Square id='square_2_0' value={squares[2][0]} onClick={() => handleClick(2, 0)}/>
-                    <Square id='square_2_1' value={squares[2][1]} onClick={() => handleClick(2, 1)}/>
-                    <Square id='square_2_2' value={squares[2][2]} onClick={() => handleClick(2, 2)}/>
+                    <Square id='square_2_0' value={squares[2][0]}
+                            onClick={() => handleClick(2, 0)}/>
+                    <Square id='square_2_1' value={squares[2][1]}
+                            onClick={() => handleClick(2, 1)}/>
+                    <Square id='square_2_2' value={squares[2][2]}
+                            onClick={() => handleClick(2, 2)}/>
                 </div>
             </div>
             <div className="sources">
