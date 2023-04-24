@@ -35,24 +35,25 @@ function GameInfo({value, isGameOver, winner, gameMode}) {
 function ResetButton({handleReset}) {
     return (
         <>
-            <button onClick={handleReset} className='reset_game_button'><img src={returnIcon} alt='Reset'
+            <button title='Reset' onClick={handleReset} className='reset_game_button'><img src={returnIcon} alt='Reset'
                                                                              className='icon'
                                                                              id='returnIcon'/></button>
         </>
     )
 }
 
-function MultiPlayerButton({onClick}) {
+function MultiPlayerButton({onClick, styles}) {
     return (
-        <button onClick={onClick}><img src={multiPlayerIcon} alt="MultiPlayer" className='icon' id='multiPlayerIcon'/>
+        <button title='Multiplayer' style={styles} onClick={onClick}><img src={multiPlayerIcon} alt="MultiPlayer" className='icon'
+                                                      id='multiPlayerIcon'/>
         </button>
     )
 }
 
-function SinglePlayerButton({onClick}) {
+function SinglePlayerButton({onClick, styles}) {
     return (
-        <button onClick={onClick}><img src={singlePlayerIcon} alt="SinglePlayer" className='icon'
-                                       id='singlePlayerIcon'/></button>
+        <button title='Singleplayer' style={styles} onClick={onClick}><img src={singlePlayerIcon} alt="SinglePlayer" className='icon'
+                                                      id='singlePlayerIcon'/></button>
     )
 }
 
@@ -65,6 +66,8 @@ function Board() {
     const [winner, setWinner] = useState(null)
     const [gameMode, setGameMode] = useState(null)
     const [isPcMakingMove, setIsPcMakingMove] = useState(false)
+    const [isButton1Selected, setIsButton1Selected] = useState(false)
+    const [isButton2Selected, setIsButton2Selected] = useState(false)
 
     function singlePlayerStart() {
         console.log('picked single player')
@@ -181,13 +184,41 @@ function Board() {
         setPlayerTurnSign('O')
     }
 
+    const buttonStyles = {
+        background: 'transparent',
+        border: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '7px',
+        cursor: 'pointer',
+    }
+
+    const selectedButtonStyles = {
+        background: '#1e3d52',
+        border: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '7px',
+    }
+
+
     return (
         <>
 
             <div className='upper_panel'>
                 <h1>XO</h1>
-                <SinglePlayerButton onClick={singlePlayerStart}/>
-                <MultiPlayerButton onClick={multiPlayerStart}/>
+                <SinglePlayerButton styles={isButton1Selected ? selectedButtonStyles : buttonStyles} onClick={() => {
+                    singlePlayerStart()
+                    setIsButton1Selected(true)
+                    setIsButton2Selected(false)
+                }}/>
+                <MultiPlayerButton styles={isButton2Selected ? selectedButtonStyles : buttonStyles} onClick={() => {
+                    multiPlayerStart()
+                    setIsButton1Selected(false)
+                    setIsButton2Selected(true)
+                }}/>
                 <ResetButton handleReset={resetGame}/>
             </div>
             <div className='game_mode_info'>{gameMode}</div>
@@ -222,9 +253,11 @@ function Board() {
                 Icons made by
                 <a href="https://www.flaticon.com/free-icons/return" title="return icons">Return icons created by
                     Smartline - Flaticon</a>
-                <a href="https://www.flaticon.com/free-icons/people" title="people icons">People icons created by Muhazdinata -
+                <a href="https://www.flaticon.com/free-icons/people" title="people icons">People icons created by
+                    Muhazdinata -
                     Flaticon</a>
-                <a href="https://www.flaticon.com/free-icons/computer" title="computer icons">Computer icons created by Freepik -
+                <a href="https://www.flaticon.com/free-icons/computer" title="computer icons">Computer icons created by
+                    Freepik -
                     Flaticon</a>
             </div>
         </>
